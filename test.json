@@ -1,0 +1,28 @@
+{
+    "message": "Not Found",
+    "logref": null,
+    "path": null,
+    "_embedded": {
+        "errors": [
+            {
+                "message": "Page Not Found",
+                "logref": null,
+                "path": null,
+                "_embedded": {},
+                "_links": {}
+            }
+        ]
+    },
+    "_links": {
+        "self": {
+            "href": "/v3/a_ALlxoURdyYHD7jSohiZ8m5NqwR4xdN",
+            "templated": false,
+            "profile": null,
+            "deprecation": null,
+            "title": null,
+            "hreflang": null,
+            "type": null,
+            "name": null
+        }
+    }
+}

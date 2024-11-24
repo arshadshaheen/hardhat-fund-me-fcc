@@ -49,7 +49,7 @@ This project is apart of the Hardhat FreeCodeCamp video.
 ## Quickstart
 
 ```
-git clone https://github.com/PatrickAlphaC/hardhat-fund-me-fcc
+git clone 
 cd hardhat-fund-me-fcc
 yarn
 ```

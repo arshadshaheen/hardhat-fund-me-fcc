@@ -16,8 +16,17 @@ const PRIVATE_KEY =    process.env.PRIVATE_KEY ;
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY ;
 const ETH_USD_PRICE_FEED = process.env.ETH_USD_PRICE_FEED ;
 
+require("dotenv").config();
+
+console.log("PRIVATE_KEY:", process.env.PRIVATE_KEY);
+console.log("SEPOLIA_RPC_URL:", process.env.SEPOLIA_RPC_URL);
+console.log("COINMARKETCAP_API_KEY:", process.env.COINMARKETCAP_API_KEY);
+console.log("ETHERSCAN_API_KEY:", process.env.ETHERSCAN_API_KEY);
+console.log("ETH_USD_PRICE_FEED:", process.env.ETH_USD_PRICE_FEED);
+
+
 module.exports = {
-    defaultNetwork: "hardhat",
+    defaultNetwork: "sepolia",
     networks: {
         hardhat: {
             chainId: 31337,
@@ -25,9 +34,11 @@ module.exports = {
         },
         sepolia: {
             url: SEPOLIA_RPC_URL,
-            accounts: [PRIVATE_KEY],
+            accounts: PRIVATE_KEY ? [PRIVATE_KEY] : [],
             chainId: 11155111,
-            blockConfirmations: 2,
+            blockConfirmations: 6,
+            gasPrice: 20000000000, // 20 gwei (adjust as needed)
+            gas: 3000000,         // Limit gas to 3 million units (adjust as needed)
         },
     },
     solidity: {
