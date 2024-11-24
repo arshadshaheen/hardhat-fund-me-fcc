@@ -636,7 +636,7 @@ contract ERC20 is Context, IERC20 {
 
 // File: contracts/root/RootToken/IMintableERC20.sol
 
-pragma solidity 0.6.6;
+pragma solidity >=0.6.0 <0.8.0;
 
 interface IMintableERC20 is IERC20 {
     /**
@@ -651,7 +651,7 @@ interface IMintableERC20 is IERC20 {
 
 // File: contracts/common/Initializable.sol
 
-pragma solidity 0.6.6;
+pragma solidity >=0.6.0 <0.8.0;
 
 contract Initializable {
     bool inited = false;
@@ -665,7 +665,7 @@ contract Initializable {
 
 // File: contracts/common/EIP712Base.sol
 
-pragma solidity 0.6.6;
+pragma solidity >=0.6.0 <0.8.0;
 
 
 contract EIP712Base is Initializable {
@@ -742,7 +742,7 @@ contract EIP712Base is Initializable {
 
 // File: contracts/common/NativeMetaTransaction.sol
 
-pragma solidity 0.6.6;
+pragma solidity >=0.6.0 <0.8.0;
 
 
 
@@ -848,7 +848,7 @@ contract NativeMetaTransaction is EIP712Base {
 
 // File: contracts/common/ContextMixin.sol
 
-pragma solidity 0.6.6;
+pragma solidity >=0.6.0 <0.8.0;
 
 abstract contract ContextMixin {
     function msgSender()
@@ -1586,7 +1586,7 @@ abstract contract AccessControl is Context {
 
 // File: contracts/common/AccessControlMixin.sol
 
-pragma solidity 0.6.6;
+pragma solidity >=0.6.0 <0.8.0;
 
 
 contract AccessControlMixin is AccessControl {
@@ -1609,7 +1609,7 @@ contract AccessControlMixin is AccessControl {
 // This contract is not supposed to be used in production
 // It's strictly for testing purpose
 
-pragma solidity 0.6.6;
+pragma solidity >=0.6.0 <0.8.0;
 
 
 
@@ -1625,12 +1625,12 @@ contract TADEX is
 {
     bytes32 public constant PREDICATE_ROLE = keccak256("PREDICATE_ROLE");
 
-    constructor(string memory name_, string memory symbol_)
+    constructor(string memory name_, string memory symbol_, address predicateAddress)
         public
         ERC20(name_, symbol_)
     {
-        _setupContractId("TADEX");
-        _setupRole(PREDICATE_ROLE, 0x9277a463A508F45115FdEaf22FfeDA1B16352433);
+        _setupContractId(symbol_);
+        _setupRole(PREDICATE_ROLE, predicateAddress);
         _initializeEIP712(name_);
     }
 
