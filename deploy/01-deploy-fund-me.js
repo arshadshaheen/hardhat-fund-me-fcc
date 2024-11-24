@@ -7,6 +7,7 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     const { deploy, log } = deployments
     const { deployer } = await getNamedAccounts()
     const chainId = network.config.chainId
+    const ETH_USD_PRICE_FEED = process.env.ETH_USD_PRICE_FEED ;
 
     let ethUsdPriceFeedAddress
     if (chainId == 31337) {
