@@ -7,10 +7,10 @@ async function main() {
     const deployerSigner = await ethers.getSigner(deployer);
 
     // Get the deployed contract
-    const tadexDeployment = await deployments.get("TADEX");
-    const tadex = await ethers.getContractAt(
-        "TADEX",
-        tadexDeployment.address,
+    const dextianDeployment = await deployments.get("DEXN");
+    const dextian = await ethers.getContractAt(
+        "DEXN",
+        dextianDeployment.address,
         deployerSigner
     );
 
@@ -18,7 +18,7 @@ async function main() {
     const predicateRole = ethers.utils.keccak256(
         ethers.utils.toUtf8Bytes("PREDICATE_ROLE")
     );
-    const hasRole = await tadex.hasRole(
+    const hasRole = await dextian.hasRole(
         predicateRole,
         "0x9277a463A508F45115FdEaf22FfeDA1B16352433"
     );

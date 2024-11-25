@@ -42,7 +42,7 @@ module.exports = {
             accounts: PRIVATE_KEY ? [PRIVATE_KEY] : [],
             chainId: 11155111,
             blockConfirmations: 6,
-            gasPrice: 20000000000, // 20 Gwei (common for Sepolia)
+            gasPrice: 14050609292, // 20 Gwei (common for Sepolia)
             gas: 4000000,          // Limit gas to 3 million units (adjust as needed)
         },
     },

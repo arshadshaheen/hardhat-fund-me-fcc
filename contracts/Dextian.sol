@@ -1616,7 +1616,7 @@ pragma solidity >=0.6.0 <0.8.0;
 
 
 
-contract TADEX is
+contract Dextian is
     ERC20,
     AccessControlMixin,
     NativeMetaTransaction,
