@@ -12,6 +12,7 @@ This is a section of the Javascript Blockchain/Smart Contract FreeCodeCamp Cours
 
 [Full Repo](https://github.com/smartcontractkit/full-blockchain-solidity-course-js)
 
+- [Update: Head to Cyfrin Updraft](#update-head-to-cyfrin-updraft)
 - [Hardhat Fund Me](#hardhat-fund-me)
 - [Getting Started](#getting-started)
   - [Requirements](#requirements)
@@ -181,3 +182,8 @@ ETH/Polygon/Avalanche/etc Address: 0x9680201d9c93d65a3603d2088d125e955c73BD65
 [![Patrick Collins YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/channel/UCn-3f8tw_E1jZvhuHatROwA)
 [![Patrick Collins Linkedin](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/patrickalphac/)
 [![Patrick Collins Medium](https://img.shields.io/badge/Medium-000000?style=for-the-badge&logo=medium&logoColor=white)](https://medium.com/@patrick.collins_58673/)
+
+
+
+yarn hardhat clean --show-stack-traces
+yarn hardhat compile --show-stack-traces

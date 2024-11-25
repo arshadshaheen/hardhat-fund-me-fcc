@@ -1622,31 +1622,93 @@ contract TADEX is
     NativeMetaTransaction,
     ContextMixin,
     IMintableERC20
+    
 {
     bytes32 public constant PREDICATE_ROLE = keccak256("PREDICATE_ROLE");
+    uint256 public immutable maxSupply; // Maximum token supply
 
-    constructor(string memory name_, string memory symbol_, address predicateAddress)
+    uint256 public constant MAX_DEPOSIT_MINT_SUPPLY = 200_000_000 * 10**6; // 120 million tokens for deposit-based minting
+    uint256 public constant TIER_1_LIMIT = 30_000_000 * 10**6; // 30 million tokens
+    uint256 public constant TIER_2_LIMIT = 60_000_000 * 10**6; // 60 million tokens
+    uint256 public constant TIER_3_LIMIT = 90_000_000 * 10**6; // 90 million tokens
+    uint256 public constant TIER_4_LIMIT = 120_000_000 * 10**6; // 90 million tokens
+
+    uint256 public constant TIER_1_PRICE = 0.05 ether; // Price per 10,000 tokens
+    uint256 public constant TIER_2_PRICE = 0.1 ether;
+    uint256 public constant TIER_3_PRICE = 0.2 ether;
+    uint256 public constant TIER_4_PRICE = 0.3 ether;
+    uint256 public constant TIER_5_PRICE = 0.5 ether;
+
+    uint256 public depositMintedSupply; // Tracks tokens minted via deposits
+    event TokensPurchased(address indexed buyer, uint256 ethAmount, uint256 tokenAmount);
+
+    constructor(string memory name_, string memory symbol_, address predicateAddress, uint256 initialSupply,
+        uint256 _maxSupply)
         public
         ERC20(name_, symbol_)
     {
+        require(_maxSupply > 0, "Max supply must be greater than 0");
+        require(initialSupply <= _maxSupply, "Initial supply exceeds max supply");
+
         _setupContractId(symbol_);
         _setupRole(PREDICATE_ROLE, predicateAddress);
         _initializeEIP712(name_);
+
+        maxSupply = _maxSupply;
+
+        // Mint initial supply to the deployer
+        _mint(msg.sender, initialSupply);
+    }
+
+    // Receive ETH and mint tokens
+    receive() external payable {
+        require(depositMintedSupply < MAX_DEPOSIT_MINT_SUPPLY, "Deposit minting supply exceeded");
+        require(msg.value > 0, "Must send ETH to purchase tokens");
+
+        uint256 tokensToMint = _calculateTokens(msg.value);
+        require(tokensToMint > 0, "Not enough ETH sent to purchase tokens");
+
+        uint256 newDepositSupply = depositMintedSupply + tokensToMint;
+        require(newDepositSupply <= MAX_DEPOSIT_MINT_SUPPLY, "Exceeds deposit-based minting supply");
+
+        depositMintedSupply = newDepositSupply;
+
+        _mint(msg.sender, tokensToMint);
+
+        emit TokensPurchased(msg.sender, msg.value, tokensToMint);
+    }
+
+    // Calculate how many tokens to mint based on current supply and deposit amount
+    function _calculateTokens(uint256 ethAmount) internal view returns (uint256) {
+        uint256 currentSupply = totalSupply();
+
+        if (currentSupply < TIER_1_LIMIT) {
+            return (ethAmount * 10_000) / TIER_1_PRICE;
+        } else if (currentSupply < TIER_2_LIMIT) {
+            return (ethAmount * 10_000) / TIER_2_PRICE;
+        } else if (currentSupply < TIER_3_LIMIT) {
+            return (ethAmount * 10_000) / TIER_3_PRICE;
+        } else if (currentSupply < TIER_4_LIMIT) {
+            return (ethAmount * 10_000) / TIER_4_PRICE;
+        } else if (currentSupply < MAX_DEPOSIT_MINT_SUPPLY) {
+            return (ethAmount * 10_000) / TIER_5_PRICE;
+        }
+
+
+        return 0; // If supply exceeds max, no tokens are minted
     }
 
     /**
      * @dev See {IMintableERC20-mint}.
      */
     function mint(address user, uint256 amount) external override only(PREDICATE_ROLE) {
+        require(totalSupply().add(amount) <= maxSupply, "Mint exceeds max supply");
         _mint(user, amount);
     }
+    
 
-    function _msgSender()
-        internal
-        override
-        view
-        returns (address payable sender)
-    {
+    function _msgSender() internal override view returns (address payable sender) {
         return ContextMixin.msgSender();
     }
+
 }
