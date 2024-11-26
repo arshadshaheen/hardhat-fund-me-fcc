@@ -7,9 +7,9 @@ async function main() {
     const deployerSigner = await ethers.getSigner(deployer);
 
     // Get the deployed contract
-    const dextianDeployment = await deployments.get("DEXN");
+    const dextianDeployment = await deployments.get("DEXTN");
     const dextian = await ethers.getContractAt(
-        "DEXN",
+        "DEXTN",
         dextianDeployment.address,
         deployerSigner
     );
@@ -20,7 +20,7 @@ async function main() {
     );
     const hasRole = await dextian.hasRole(
         predicateRole,
-        "0x9277a463A508F45115FdEaf22FfeDA1B16352433"
+        "0x0997B7Ea8c8D31d311be8efc6d02d1bE7De2ceC7"
     );
 
     console.log(`Has PREDICATE_ROLE: ${hasRole}`);

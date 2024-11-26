@@ -2,7 +2,7 @@ const { ethers } = require("hardhat");
 
 async function main() {
     const [deployer] = await ethers.getSigners();
-    const dextian = await ethers.getContract("DEXN");
+    const dextian = await ethers.getContract("DEXTN");
 
     const mintAmount = ethers.utils.parseUnits("1000", 6); // Mint 1000 tokens
     console.log(`Minting ${mintAmount} tokens to deployer: ${deployer.address}`);

@@ -4,7 +4,7 @@ async function main() {
     const [deployer] = await ethers.getSigners();
     const balance = await ethers.provider.getBalance(deployer.address);
 
-    console.log(`Deployer ETH balance: ${ethers.utils.formatEther(balance)} ETH`);
+    console.log(`Deployer ETH balance: ${ethers.formatEther(balance)} ETH`);
 }
 
 main().catch((error) => {

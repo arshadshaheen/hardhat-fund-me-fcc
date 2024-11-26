@@ -1,15 +1,18 @@
 const { ethers } = require("hardhat")
-
+require("dotenv").config();
 async function main() {
-    const CONTRACT_ADDRESS = "0xDFbb2b099a94bD5B23d38240016715377dF4407c"; // Replace with your contract address
-    const recipientAddress = "0x053e6D2ab9904f02e268D8E00F7f32d3EA1a60d0"; // Replace with recipient's address
+    const recipientAddress = process.env.MY_ADDRESS; 
+    const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS
+
+   
     const mintAmount = ethers.parseUnits("2000000", 6); // 2 million tokens with 6 decimals
+
 
     // Get signer
     const [deployer] = await ethers.getSigners();
 
     // Attach to the contract
-    const Dextian = await ethers.getContractFactory("DEXN");
+    const Dextian = await ethers.getContractFactory("DEXTN");
     const dextian = Dextian.attach(CONTRACT_ADDRESS);
 
     // Call the mint function

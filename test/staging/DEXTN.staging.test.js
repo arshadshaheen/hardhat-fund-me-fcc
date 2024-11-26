@@ -1,22 +1,22 @@
 const { expect } = require("chai");
 const { ethers, getNamedAccounts, deployments } = require("hardhat");
+require("dotenv").config();
 
-describe("DEXN Staging Tests", function () {
+describe("DEXTN Staging Tests", function () {
     let deployer;
     let dextian;
     let predicateRole;
     console.log("Running beforeEach...");
     beforeEach(async () => {
         try {
-            // Get deployer address from named accounts
-            const { deployer } = await getNamedAccounts();
-    
-            // Get deployer balance
+            // Fetch the deployer's address and balance
+            deployer = (await getNamedAccounts()).deployer;
             const balance = await ethers.provider.getBalance(deployer);
-            console.log(`Deployer Address: ${deployer}`);
-            console.log(`Deployer Balance: ${ethers.utils.formatEther(balance)} ETH`);
+            console.log("Deployer Address:", deployer);
+            console.log("Deployer Balance:", ethers.formatUnits(balance), "ETH");
     
-            if (balance.lt(ethers.utils.parseEther("0.01"))) {
+            // Check if the balance is sufficient
+            if (balance < ethers.parseEther("0.01")) { // Compare BigInt directly
                 throw new Error(
                     "Deployer does not have enough funds for deployment."
                 );
@@ -24,15 +24,16 @@ describe("DEXN Staging Tests", function () {
     
             // Deploy the contract using the fixture
             await deployments.fixture(["all"]);
-            dextian = await ethers.getContract("Dextian", deployer);
+            dextian = await ethers.getContractAt("DEXTN", deployer);
     
             // Compute the PREDICATE_ROLE hash
-            predicateRole = ethers.utils.keccak256(ethers.utils.toUtf8Bytes("PREDICATE_ROLE"));
+            predicateRole = ethers.keccak256(ethers.toUtf8Bytes("PREDICATE_ROLE"));
         } catch (error) {
             console.error("Error in beforeEach:", error);
             throw error;
         }
     });
+    
     
 
     it("should deploy successfully with correct name and symbol", async () => {
@@ -40,22 +41,22 @@ describe("DEXN Staging Tests", function () {
         const symbol = await dextian.symbol();
         const decimals = await dextian.decimals();
 
-        expect(name).to.equal("DEXN Token");
-        expect(symbol).to.equal("DEXN");
+        expect(name).to.equal("DEXTN Token");
+        expect(symbol).to.equal("DEXTN");
         expect(decimals).to.equal(6); // As defined in the constructor
     });
 
     it("should grant PREDICATE_ROLE to the correct address", async () => {
         const hasPredicateRole = await dextian.hasRole(
             predicateRole,
-            "0x9277a463A508F45115FdEaf22FfeDA1B16352433"
-            // 0x053e6D2ab9904f02e268D8E00F7f32d3EA1a60d0
+            "0x694AA1769357215DE4FAC081bf1f309aDC325306"
+            
         );
         expect(hasPredicateRole).to.be.true;
     });
 
     it("should allow minting tokens by PREDICATE_ROLE", async () => {
-        const mintAmount = ethers.parseUnits("1000", 6); // 1000 DEXN tokens
+        const mintAmount = ethers.parseUnits("1000", 6); // 1000 DEXTN tokens
         const user = (await ethers.getSigners())[1].address;
 
         // Grant PREDICATE_ROLE to the deployer for testing purposes
@@ -69,12 +70,12 @@ describe("DEXN Staging Tests", function () {
     });
 
     it("should restrict minting tokens to accounts without PREDICATE_ROLE", async () => {
-        const mintAmount = ethers.parseUnits("1000", 6); // 1000 DEXN tokens
+        const mintAmount = ethers.parseUnits("1000", 6); // 1000 DEXTN tokens
         const user = (await ethers.getSigners())[1].address;
 
         // Try minting without granting PREDICATE_ROLE
         await expect(dextian.mint(user, mintAmount)).to.be.revertedWith(
-            "DEXN: INSUFFICIENT_PERMISSIONS"
+            "DEXTN: INSUFFICIENT_PERMISSIONS"
         );
     });
 });

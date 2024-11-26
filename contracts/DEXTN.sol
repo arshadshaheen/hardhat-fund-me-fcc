@@ -1612,11 +1612,7 @@ contract AccessControlMixin is AccessControl {
 pragma solidity >=0.6.0 <0.8.0;
 
 
-
-
-
-
-contract Dextian is
+contract DEXTN is
     ERC20,
     AccessControlMixin,
     NativeMetaTransaction,

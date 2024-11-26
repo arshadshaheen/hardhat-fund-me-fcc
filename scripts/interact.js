@@ -2,10 +2,10 @@ const { ethers } = require("hardhat");
 
 async function main() {
     // Replace with your deployed contract address
-    const contractAddress = "0xb3212036815788FE65D8AbF2f4eC5e1405AAcA2A";
+    const contractAddress = "0x0997B7Ea8c8D31d311be8efc6d02d1bE7De2ceC7";
 
     // Fetch the ABI
-    const Dextian = await ethers.getContractFactory("DEXN");
+    const Dextian = await ethers.getContractFactory("DEXTN");
     const dextian = Dextian.attach(contractAddress);
 
     // Call functions
@@ -24,7 +24,7 @@ async function main() {
     const mintTx = await dextian.mint(deployer.address, mintAmount);
     await mintTx.wait();
 
-    console.log(`Minted 1000 DEXN to: ${deployer.address}`);
+    console.log(`Minted 1000 DEXTN to: ${deployer.address}`);
 }
 
 main()

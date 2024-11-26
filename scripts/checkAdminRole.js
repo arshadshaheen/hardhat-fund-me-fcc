@@ -2,7 +2,7 @@ const { ethers } = require("hardhat");
 
 async function main() {
     const [deployer] = await ethers.getSigners();
-    const dextian = await ethers.getContract("DEXN");
+    const dextian = await ethers.getContract("DEXTN");
 
     const adminRole = ethers.constants.HashZero; // DEFAULT_ADMIN_ROLE is bytes32(0)
     const hasAdminRole = await dextian.hasRole(adminRole, deployer.address);

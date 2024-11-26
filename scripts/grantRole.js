@@ -1,10 +1,10 @@
 const { ethers } = require("hardhat");
 
 async function main() {
-    const dextian = await ethers.getContract("DEXN");
+    const dextian = await ethers.getContract("DEXTN");
     const predicateRole = ethers.utils.keccak256(ethers.utils.toUtf8Bytes("PREDICATE_ROLE"));
 
-    const newAddress = "0x053e6D2ab9904f02e268D8E00F7f32d3EA1a60d0"; // Replace with your MetaMask address
+    const newAddress = "0x694AA1769357215DE4FAC081bf1f309aDC325306"; // Replace with your MetaMask address
     const tx = await dextian.grantRole(predicateRole, newAddress);
     await tx.wait();
 

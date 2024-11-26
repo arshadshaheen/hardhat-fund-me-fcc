@@ -6,7 +6,7 @@ async function main() {
     // Fetch the balance of the deployer
     const balance = await ethers.provider.getBalance(deployer);
     console.log(`Deployer Address: ${deployer}`);
-    console.log(`Deployer Balance: ${ethers.utils.formatEther(balance)} ETH`);
+    console.log(`Deployer Balance: ${ethers.formatEther(balance)} ETH`);
 }
 
 main().catch((error) => {
