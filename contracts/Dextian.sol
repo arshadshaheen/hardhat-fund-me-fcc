@@ -1624,20 +1624,37 @@ contract DEXTIAN is
     IMintableERC20
 {
     bytes32 public constant PREDICATE_ROLE = keccak256("PREDICATE_ROLE");
+     uint256 public immutable maxSupply; // Max supply variable
 
-    constructor(string memory name_, string memory symbol_, address predicateAddress)
-        public
-        ERC20(name_, symbol_)
+    constructor(string memory name_, string memory symbol_, address predicateAddress, uint256 maxSupply_,
+        address initialHolder, 
+        uint256 initialSupply  
+    )
+        public ERC20(name_, symbol_)
     {
+        require(maxSupply_ > 0, "Max supply must be greater than 0");
+        require(initialSupply <= maxSupply_, "Initial supply exceeds max supply");
+
+        maxSupply = maxSupply_; // Set the max supply
+
         _setupContractId(symbol_);
         _setupRole(PREDICATE_ROLE, predicateAddress);
         _initializeEIP712(name_);
+
+        // Mint the initial supply to the specified holder
+        if (initialSupply > 0) {
+            _mint(initialHolder, initialSupply);
+        }
     }
 
     /**
      * @dev See {IMintableERC20-mint}.
      */
-    function mint(address user, uint256 amount) external override only(PREDICATE_ROLE) {
+     function mint(address user, uint256 amount) external override only(PREDICATE_ROLE) {
+        require(
+            totalSupply() + amount <= maxSupply,
+            "Mint exceeds maximum supply"
+        );
         _mint(user, amount);
     }
 

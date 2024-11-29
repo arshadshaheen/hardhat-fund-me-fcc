@@ -4,6 +4,7 @@ require("solidity-coverage")
 require("hardhat-deploy")
 require("@nomicfoundation/hardhat-toolbox");
 require("@nomicfoundation/hardhat-verify");
+require("@nomicfoundation/hardhat-ethers");
 
 
 
