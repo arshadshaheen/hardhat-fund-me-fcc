@@ -20,8 +20,9 @@ const PRIVATE_KEY =    process.env.PRIVATE_KEY ;
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY ;
 const ETH_USD_PRICE_FEED = process.env.ETH_USD_PRICE_FEED ;
 
-require("dotenv").config();
-
+/** const gasPrice = await ethers.provider.getGasPrice();
+console.log(`Current gas price: ${gasPrice.toString()}`);
+*/
 console.log("PRIVATE_KEY:", process.env.PRIVATE_KEY);
 console.log("SEPOLIA_RPC_URL:", process.env.SEPOLIA_RPC_URL);
 console.log("COINMARKETCAP_API_KEY:", process.env.COINMARKETCAP_API_KEY);
@@ -43,7 +44,7 @@ module.exports = {
             chainId: 11155111,
             blockConfirmations: 6,
             gasPrice: 14050609292, // 20 Gwei (common for Sepolia)
-            gas: 4000000,          // Limit gas to 3 million units (adjust as needed)
+            gas: 5000000,          // Limit gas to 3 million units (adjust as needed)
         },
     },
     solidity: {

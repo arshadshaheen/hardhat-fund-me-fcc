@@ -5,8 +5,7 @@ async function main() {
     const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS
 
    
-    const mintAmount = ethers.parseUnits("2000000", 6); // 2 million tokens with 6 decimals
-
+    const mintAmount = ethers.parseUnits("100000", 6); // 2 million tokens with 6 decimals
 
     // Get signer
     const [deployer] = await ethers.getSigners();
