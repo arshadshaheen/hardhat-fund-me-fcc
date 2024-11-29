@@ -5,7 +5,7 @@ async function main() {
     const contractAddress = "0xb3212036815788FE65D8AbF2f4eC5e1405AAcA2A";
 
     // Fetch the ABI
-    const Dextian = await ethers.getContractFactory("DEXTIAN");
+    const Dextian = await ethers.getContractFactory("Dextian");
     const dextian = Dextian.attach(contractAddress);
 
     // Call functions

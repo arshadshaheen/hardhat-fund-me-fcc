@@ -18,7 +18,7 @@ describe("DEXTIAN Staging Tests", function () {
             const balance = await ethers.provider.getBalance(deployer);
             console.log(`Deployer Balance: ${ethers.formatEther(balance)} ETH`);
 
-            if (balance<(ethers.parseEther("0.01"))) {
+            if (balance.lt(ethers.utils.parseEther("0.01"))) {
                 throw new Error("Deployer does not have enough funds for deployment.");
             }
 
@@ -34,7 +34,7 @@ describe("DEXTIAN Staging Tests", function () {
             maxSupply = ethers.utils.parseUnits("1000000", 6); // 1,000,000 DEXTIAN tokens
 
             // Compute the PREDICATE_ROLE hash
-            predicateRole = ethers.keccak256(ethers.toUtf8Bytes("PREDICATE_ROLE"));
+            predicateRole = ethers.utils.keccak256(ethers.utils.toUtf8Bytes("PREDICATE_ROLE"));
         } catch (error) {
             console.error("Error in beforeEach:", error);
             throw error;
@@ -64,7 +64,7 @@ describe("DEXTIAN Staging Tests", function () {
     });
 
     it("should allow minting tokens by accounts with PREDICATE_ROLE", async () => {
-        const mintAmount = ethers.parseUnits("1000", 6); // 1,000 DEXTIAN tokens
+        const mintAmount = ethers.utils.parseUnits("1000", 6); // 1,000 DEXTIAN tokens
         const user = (await ethers.getSigners())[1].address;
 
         // Grant PREDICATE_ROLE to the deployer for testing purposes
@@ -78,7 +78,7 @@ describe("DEXTIAN Staging Tests", function () {
     });
 
     it("should restrict minting tokens by accounts without PREDICATE_ROLE", async () => {
-        const mintAmount = ethers.parseUnits("1000", 6); // 1,000 DEXTIAN tokens
+        const mintAmount = ethers.utils.parseUnits("1000", 6); // 1,000 DEXTIAN tokens
         const user = (await ethers.getSigners())[1].address;
 
         // Try minting without granting PREDICATE_ROLE
@@ -94,7 +94,7 @@ describe("DEXTIAN Staging Tests", function () {
         await dextian.grantRole(predicateRole, deployer);
 
         // Attempt to mint an amount exceeding the max supply
-        const excessiveMintAmount = maxSupply.add(ethers.parseUnits("1", 6));
+        const excessiveMintAmount = maxSupply.add(ethers.utils.parseUnits("1", 6));
         await expect(dextian.mint(user, excessiveMintAmount)).to.be.revertedWith(
             "Mint exceeds maximum supply"
         );

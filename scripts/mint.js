@@ -9,7 +9,7 @@ async function main() {
     const [deployer] = await ethers.getSigners();
 
     // Attach to the contract
-    const Dextian = await ethers.getContractFactory("DEXTIAN");
+    const Dextian = await ethers.getContractFactory("Dextian");
     const dextian = Dextian.attach(CONTRACT_ADDRESS);
 
     // Call the mint function

@@ -2,7 +2,7 @@ const { ethers } = require("hardhat");
 
 async function main() {
     const [deployer] = await ethers.getSigners();
-    const dextian = await ethers.getContract("DEXTIAN");
+    const dextian = await ethers.getContract("Dextian");
 
     const balance = await dextian.balanceOf(deployer.address);
     console.log(`Deployer token balance: ${ethers.utils.formatUnits(balance, 6)} DEXTIAN`);

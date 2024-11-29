@@ -7,7 +7,7 @@ async function main() {
     const deployerSigner = await ethers.getSigner(deployer);
 
     // Get the deployed contract
-    const dextianDeployment = await deployments.get("DEXTIAN");
+    const dextianDeployment = await deployments.get("Dextian");
     const dextian = await ethers.getContractAt(
         "DEXTIAN",
         dextianDeployment.address,
