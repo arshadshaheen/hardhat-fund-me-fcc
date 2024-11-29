@@ -15,23 +15,23 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
         );
     }
 
-    console.log(`Deploying TADEX with PREDICATE_ROLE assigned to ${myAddress}`);
+    console.log(`Deploying DEXTIAN with PREDICATE_ROLE assigned to ${myAddress}`);
 
     try {
-        // Deploy the TADEX contract with the predicate address
-        const tadex = await deploy(tokenSymbole, {
+        // Deploy the DEXTIAN contract with the predicate address
+        const dextian = await deploy(tokenSymbole, {
             from: deployer,
             args: [tokenName, tokenSymbole, myAddress], // Pass the predicate address dynamically
             log: true,
         });
 
-        console.log(`${tokenSymbole} deployed at ${tadex.address}`);
+        console.log(`${tokenSymbole} deployed at ${dextian.address}`);
         console.log(
-            `Verify the contract using: npx hardhat verify --network <network> ${tadex.address} ${tokenName} ${tokenSymbole} ${myAddress}`
+            `Verify the contract using: npx hardhat verify --network <network> ${dextian.address} ${tokenName} ${tokenSymbole} ${myAddress}`
         );
     } catch (error) {
         console.error("Deployment failed:", error);
     }
 };
 
-module.exports.tags = ["all", "tadex"];
+module.exports.tags = ["all", "dextian"];

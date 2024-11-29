@@ -1,9 +1,9 @@
 const { expect } = require("chai");
 const { ethers, getNamedAccounts, deployments } = require("hardhat");
 
-describe("TADEX Staging Tests", function () {
+describe("DEXTIAN Staging Tests", function () {
     let deployer;
-    let tadex;
+    let dextian;
     let predicateRole;
     console.log("Running beforeEach...");
     beforeEach(async () => {
@@ -24,9 +24,9 @@ describe("TADEX Staging Tests", function () {
             await deployments.fixture(["all"]);
             console.log("Deployer:", deployer);
 
-            // Get the deployed TADEX contract
-            tadex = await ethers.getContract("TADEX", deployer);
-            console.log("TADEX contract fetched:", tadex.address);
+            // Get the deployed DEXTIAN contract
+            dextian = await ethers.getContract("DEXTIAN", deployer);
+            console.log("DEXTIAN contract fetched:", dextian.address);
 
             // Compute the PREDICATE_ROLE hash
             predicateRole = ethers.utils.keccak256(ethers.utils.toUtf8Bytes("PREDICATE_ROLE"));
@@ -38,17 +38,17 @@ describe("TADEX Staging Tests", function () {
     });
 
     it("should deploy successfully with correct name and symbol", async () => {
-        const name = await tadex.name();
-        const symbol = await tadex.symbol();
-        const decimals = await tadex.decimals();
+        const name = await dextian.name();
+        const symbol = await dextian.symbol();
+        const decimals = await dextian.decimals();
 
-        expect(name).to.equal("TADEX Token");
-        expect(symbol).to.equal("TADEX");
+        expect(name).to.equal("DEXTIAN Token");
+        expect(symbol).to.equal("DEXTIAN");
         expect(decimals).to.equal(6); // As defined in the constructor
     });
 
     it("should grant PREDICATE_ROLE to the correct address", async () => {
-        const hasPredicateRole = await tadex.hasRole(
+        const hasPredicateRole = await dextian.hasRole(
             predicateRole,
             "0x9277a463A508F45115FdEaf22FfeDA1B16352433"
             // 0x053e6D2ab9904f02e268D8E00F7f32d3EA1a60d0
@@ -57,26 +57,26 @@ describe("TADEX Staging Tests", function () {
     });
 
     it("should allow minting tokens by PREDICATE_ROLE", async () => {
-        const mintAmount = ethers.utils.parseUnits("1000", 6); // 1000 TADEX tokens
+        const mintAmount = ethers.utils.parseUnits("1000", 6); // 1000 DEXTIAN tokens
         const user = (await ethers.getSigners())[1].address;
 
         // Grant PREDICATE_ROLE to the deployer for testing purposes
-        await tadex.grantRole(predicateRole, deployer);
+        await dextian.grantRole(predicateRole, deployer);
 
         // Mint tokens to a user
-        await tadex.mint(user, mintAmount);
+        await dextian.mint(user, mintAmount);
 
-        const userBalance = await tadex.balanceOf(user);
+        const userBalance = await dextian.balanceOf(user);
         expect(userBalance.toString()).to.equal(mintAmount.toString());
     });
 
     it("should restrict minting tokens to accounts without PREDICATE_ROLE", async () => {
-        const mintAmount = ethers.utils.parseUnits("1000", 6); // 1000 TADEX tokens
+        const mintAmount = ethers.utils.parseUnits("1000", 6); // 1000 DEXTIAN tokens
         const user = (await ethers.getSigners())[1].address;
 
         // Try minting without granting PREDICATE_ROLE
-        await expect(tadex.mint(user, mintAmount)).to.be.revertedWith(
-            "TADEX: INSUFFICIENT_PERMISSIONS"
+        await expect(dextian.mint(user, mintAmount)).to.be.revertedWith(
+            "DEXTIAN: INSUFFICIENT_PERMISSIONS"
         );
     });
 });

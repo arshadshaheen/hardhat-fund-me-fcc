@@ -9,12 +9,12 @@ async function main() {
     const [deployer] = await ethers.getSigners();
 
     // Attach to the contract
-    const Tadex = await ethers.getContractFactory("TADEX");
-    const tadex = Tadex.attach(CONTRACT_ADDRESS);
+    const Dextian = await ethers.getContractFactory("DEXTIAN");
+    const dextian = Dextian.attach(CONTRACT_ADDRESS);
 
     // Call the mint function
     console.log(`Minting ${mintAmount.toString()} tokens to ${recipientAddress}...`);
-    const tx = await tadex.mint(recipientAddress, mintAmount);
+    const tx = await dextian.mint(recipientAddress, mintAmount);
     console.log("Transaction submitted:", tx.hash);
 
     // Wait for confirmation
