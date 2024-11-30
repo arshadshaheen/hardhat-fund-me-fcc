@@ -1,11 +1,15 @@
 const { ethers, getNamedAccounts } = require("hardhat")
 
 async function main() {
-  const { deployer } = await getNamedAccounts()
-  const fundMe = await ethers.getContract("FundMe", deployer)
-  console.log(`Got contract FundMe at ${fundMe.address}`)
+
+  const CONTRACT_ADDRESS = process.env.DEPLOYER_ADDRESS; // Address for deployed contract
+  const Dextian = await ethers.getContractFactory("DEXTIAN");
+  const dextian = Dextian.attach(CONTRACT_ADDRESS);
+
+  console.log(`Got contract dextian at ${dextian.address}`)
   console.log("Withdrawing from contract...")
-  const transactionResponse = await fundMe.withdraw()
+  
+  const transactionResponse = await dextian.withdraw()
   await transactionResponse.wait()
   console.log("Got it back!")
 }

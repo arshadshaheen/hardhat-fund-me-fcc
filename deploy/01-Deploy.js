@@ -3,7 +3,7 @@ require("dotenv").config();
 
 module.exports = async ({ getNamedAccounts, deployments }) => {
     const initialHolderAddress = process.env.MY_ADDRESS;
-    const predicateRoleAddress = process.env.CONTRACT_ADDRESS; // Address for PREDICATE_ROLE
+    const predicateRoleAddress = process.env.MY_ADDRESS; // Address for PREDICATE_ROLE
     const tokenName = process.env.TOKEN_NAME || "DEXTIAN Token";
     const tokenSymbol = process.env.TOKEN_SYMBOLE || "DEXTIAN";
     const maxSupply = ethers.parseUnits(process.env.MAX_SUPPLY || "1000000", 6); // Default to 1,000,000 tokens

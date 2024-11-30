@@ -1,21 +1,40 @@
-const { ethers } = require("hardhat")
+const { ethers } = require("hardhat");
+require("dotenv").config();
 
 async function main() {
-    const CONTRACT_ADDRESS = "0xDFbb2b099a94bD5B23d38240016715377dF4407c"; // Replace with your contract address
-    const recipientAddress = "0x053e6D2ab9904f02e268D8E00F7f32d3EA1a60d0"; // Replace with recipient's address
-    const mintAmount = ethers.parseUnits("2000000", 6) // ethers.utils.parseUnits("2000000", 6); // 2 million tokens with 6 decimals
+    const recipientAddress = process.env.MY_ADDRESS;
+    const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS; // Address for deployed contract
+
+    const mintAmount = ethers.parseUnits(process.env.MINT_SUPPLYU || "500000", 6); // Default to 500,000 tokens
 
     // Get signer
     const [deployer] = await ethers.getSigners();
+    console.log(`Using deployer account: ${deployer.address}`);
 
-    // Attach to the contract
-    const Dextian = await ethers.getContractFactory("Dextian");
+    // Attach to the deployed contract
+    const Dextian = await ethers.getContractFactory("DEXTIAN");
     const dextian = Dextian.attach(CONTRACT_ADDRESS);
 
-    // Call the mint function
+    // Log the computed PREDICATE_ROLE
+    const predicateRole = ethers.keccak256(ethers.toUtf8Bytes("PREDICATE_ROLE"));
+    console.log(`Computed PREDICATE_ROLE: ${predicateRole}`);
+
+    // Check if deployer has the required PREDICATE_ROLE
+    try {
+        const hasRole = await dextian.hasRole(predicateRole, deployer.address);
+        console.log(`Deployer has PREDICATE_ROLE: ${hasRole}`);
+        if (!hasRole) {
+            throw new Error(`Deployer does not have PREDICATE_ROLE. Minting not authorized.`);
+        }
+    } catch (error) {
+        console.error(`Error checking PREDICATE_ROLE: ${error.message}`);
+        throw error;
+    }
+
+    // Mint tokens
     console.log(`Minting ${mintAmount.toString()} tokens to ${recipientAddress}...`);
     const tx = await dextian.mint(recipientAddress, mintAmount);
-    console.log("Transaction submitted:", tx.hash);
+    console.log("Transaction submitted. Hash:", tx.hash);
 
     // Wait for confirmation
     await tx.wait();
@@ -25,6 +44,6 @@ async function main() {
 main()
     .then(() => process.exit(0))
     .catch((error) => {
-        console.error("Error occurred while minting:", error);
+        console.error("Error occurred during minting:", error);
         process.exit(1);
     });

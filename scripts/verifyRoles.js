@@ -1,34 +1,28 @@
-const { ethers, deployments, getNamedAccounts } = require("hardhat");
+const { ethers } = require("hardhat");
+require("dotenv").config();
 
-async function main() {
-    const { deployer } = await getNamedAccounts();
+async function testHasRole() {
+    const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS;
+    const Dextian = await ethers.getContractFactory("DEXTIAN");
+    const dextian = Dextian.attach(CONTRACT_ADDRESS);
 
-    // Get the signer object
-    const deployerSigner = await ethers.getSigner(deployer);
+    const [deployer] = await ethers.getSigners();
+    console.log(`Using deployer account: ${deployer.address}`);
 
-    // Get the deployed contract
-    const dextianDeployment = await deployments.get("Dextian");
-    const dextian = await ethers.getContractAt(
-        "DEXTIAN",
-        dextianDeployment.address,
-        deployerSigner
-    );
+    const predicateRole = ethers.keccak256(ethers.toUtf8Bytes("PREDICATE_ROLE"));
+    console.log(`Computed PREDICATE_ROLE: ${predicateRole}`);
 
-    // Verify roles
-    const predicateRole = ethers.utils.keccak256(
-        ethers.utils.toUtf8Bytes("PREDICATE_ROLE")
-    );
-    const hasRole = await dextian.hasRole(
-        predicateRole,
-        "0x9277a463A508F45115FdEaf22FfeDA1B16352433"
-    );
-
-    console.log(`Has PREDICATE_ROLE: ${hasRole}`);
+    try {
+        const hasRole = await dextian.hasRole(predicateRole, deployer.address);
+        console.log(`Deployer has PREDICATE_ROLE: ${hasRole}`);
+    } catch (error) {
+        console.error("Error testing hasRole:", error);
+    }
 }
 
-main()
+testHasRole()
     .then(() => process.exit(0))
     .catch((error) => {
-        console.error(error);
+        console.error("Script failed:", error);
         process.exit(1);
     });

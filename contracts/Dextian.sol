@@ -1626,24 +1626,24 @@ contract DEXTIAN is
     bytes32 public constant PREDICATE_ROLE = keccak256("PREDICATE_ROLE");
      uint256 public immutable maxSupply; // Max supply variable
 
-    constructor(string memory name_, string memory symbol_, address predicateAddress, uint256 maxSupply_,
-        address initialHolder, 
-        uint256 initialSupply  
+    constructor(string memory name_, string memory symbol_, address predicateRoleAddress_, uint256 maxSupply_,
+        address initialHolder_, 
+        uint256 initialSupply_  
     )
         public ERC20(name_, symbol_)
     {
         require(maxSupply_ > 0, "Max supply must be greater than 0");
-        require(initialSupply <= maxSupply_, "Initial supply exceeds max supply");
+        require(initialSupply_ <= maxSupply_, "Initial supply exceeds max supply");
 
         maxSupply = maxSupply_; // Set the max supply
 
         _setupContractId(symbol_);
-        _setupRole(PREDICATE_ROLE, predicateAddress);
+        _setupRole(PREDICATE_ROLE, predicateRoleAddress_);
         _initializeEIP712(name_);
 
         // Mint the initial supply to the specified holder
-        if (initialSupply > 0) {
-            _mint(initialHolder, initialSupply);
+        if (initialSupply_ > 0) {
+            _mint(initialHolder_, initialSupply_);
         }
     }
 
@@ -1657,6 +1657,8 @@ contract DEXTIAN is
         );
         _mint(user, amount);
     }
+    
+
 
     function _msgSender()
         internal

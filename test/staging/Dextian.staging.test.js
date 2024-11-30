@@ -18,7 +18,7 @@ describe("DEXTIAN Staging Tests", function () {
             const balance = await ethers.provider.getBalance(deployer);
             console.log(`Deployer Balance: ${ethers.formatEther(balance)} ETH`);
 
-            if (balance.lt(ethers.utils.parseEther("0.01"))) {
+            if (balance<ethers.parseEther("0.01")) {
                 throw new Error("Deployer does not have enough funds for deployment.");
             }
 
