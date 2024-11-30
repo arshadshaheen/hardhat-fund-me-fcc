@@ -1,8 +1,9 @@
 async function main() {
-    const [deployer] = await ethers.getSigners();
-    console.log("Deployer Address:", deployer.address);
-    const balance = await deployer.getBalance();
-    console.log("Deployer Balance:", ethers.utils.formatEther(balance), "ETH");
+    const { deployer } = await getNamedAccounts();
+    console.log("Deployer Address:", deployer);
+
+    const balance = await ethers.provider.getBalance(deployer); // Use provider for balance
+    console.log("Deployer Balance:", ethers.formatEther(balance), "ETH");
 }
 
 main()

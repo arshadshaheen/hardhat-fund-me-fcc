@@ -1,9 +1,14 @@
-require("@nomiclabs/hardhat-waffle")
 require("hardhat-gas-reporter")
-require("@nomiclabs/hardhat-etherscan")
 require("dotenv").config()
 require("solidity-coverage")
 require("hardhat-deploy")
+require("@nomicfoundation/hardhat-toolbox");
+require("@nomicfoundation/hardhat-verify");
+require("@nomicfoundation/hardhat-ethers");
+
+
+
+
 // You need to export an object to set up your config
 // Go to https://hardhat.org/config/ to learn more
 /**
@@ -23,7 +28,8 @@ console.log("SEPOLIA_RPC_URL:", process.env.SEPOLIA_RPC_URL);
 console.log("COINMARKETCAP_API_KEY:", process.env.COINMARKETCAP_API_KEY);
 console.log("ETHERSCAN_API_KEY:", process.env.ETHERSCAN_API_KEY);
 console.log("ETH_USD_PRICE_FEED:", process.env.ETH_USD_PRICE_FEED);
-
+console.log("MY_ADDRESS:", process.env.MY_ADDRESS);
+console.log("CONTRACT_ADDRESS:", process.env.CONTRACT_ADDRESS);
 
 module.exports = {
     defaultNetwork: "sepolia",
@@ -37,19 +43,15 @@ module.exports = {
             accounts: PRIVATE_KEY ? [PRIVATE_KEY] : [],
             chainId: 11155111,
             blockConfirmations: 6,
-            gasPrice: 20000000000, // 20 gwei (adjust as needed)
-            gas: 3000000,         // Limit gas to 3 million units (adjust as needed)
+            gasPrice: 20000000000, // 20 Gwei (common for Sepolia)
+            gas: 4000000,          // Limit gas to 3 million units (adjust as needed)
         },
     },
     solidity: {
         compilers: [
-            {
-                version: "0.8.7",
-            },
-            {
-                version: "0.6.6",
-            },
-        ],
+            { version: "0.6.6" },  // Add other versions as needed
+            { version: "0.8.20" }, // Replace with the main version of your contracts
+          ],
     },
     etherscan: {
         apiKey: ETHERSCAN_API_KEY,
